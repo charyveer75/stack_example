@@ -1,0 +1,22 @@
+version: "3.4"
+
+services:
+  frontend:
+    image: jfahrer/swarm-demo-frontend:v9
+    env_file:
+      - config/app.env
+
+  db:
+    image: postgres:9.6-alpine
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    env_file:
+      - config/db.env
+
+  lb:
+    image: jfahrer/swarm-demo-lb:v1
+    environment:
+      - PROXY_UPSTREAM=frontend:8080
+    ports:
+      - 80:80
+
